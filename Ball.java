@@ -70,12 +70,13 @@ public class Ball {
     }
   }
 
+  /*
   public void readAgents(Scanner s) throws FileNotFoundException {
           int N = s.nextInt();
           for(int i = 0; i < N; i++) {
                   Ball[i] = new Ball(s);
           }
-  }
+  } */
 
   /// @return Mass of the ball
   public double mass() {return mass;}
