@@ -13,7 +13,7 @@ public class Simulator {
   //      private Ball[] Ball;
         private Vector gravity;  /// Gravity force
         private Vector wind;     /// Wind force
-        private Obstacles obstacle;
+        private Obstacle obstacle;
 
         private static final int SAMPLES = 100;
 
@@ -44,7 +44,7 @@ public class Simulator {
                                         break;
                                 case "Obstacle":
                                         System.out.println("Reading Obstacle");
-                                        obstacle = new Obstacles(s);
+                                        obstacle = new Obstacle(s);
                                         break;
                                 default:
                                         throw new InputMismatchException("Unknown tag " + tag);
@@ -156,6 +156,14 @@ public class Simulator {
                         return c;
                 else
                         return null;
+        }
+
+        private Collision checkIntersection(Vector p, Vector pnew, Vector init, Vector fin) {
+
+                Collision c  = new Collision(Double.POSITIVE_INFINITY,null);
+                for(int i < N; i++) {
+
+
         }
 
         private void resolveCollision(Collision c) {

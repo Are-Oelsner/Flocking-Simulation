@@ -138,8 +138,6 @@ public class Vector {
                 return n;
         }
 
-        public Vector get
-
         /// @override
         /// @return String representation of vector
         public String toString() {

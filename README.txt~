@@ -19,10 +19,3 @@ Obstacles.java
         Working on Drawing Obstacles to JFrame
 Simulator.java
 Vector.java
-
-11/27/16
-Work on finding intersection between two lines
-        Object.java
-        Simulator.java >> update
-        Collision.java
-
