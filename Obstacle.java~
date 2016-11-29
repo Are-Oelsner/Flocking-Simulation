@@ -94,10 +94,18 @@ public class Obstacle {
                 GUI.drawPolygon(xPoints, yPoints, numPoints);
         }
 
+        public int getNumPoints() {return numPoints;}
         public Vector[] getPoints() {return points;}
         public Vector[] getNormals() {return normals;}
         public Vector[] edges() {return edges;}
 
+
+        public Vector[] getEdge(int i) {
+                Vector[] edge = new Vector[2];
+                edge[0] = points[(int)(edges[i].x())];
+                edge[1] = points[(int)(edges[i].y())];
+                return edge;
+        }
         public Vector getPoint(int i) {return points[i];}
 
 }

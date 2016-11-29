@@ -6,6 +6,11 @@ public class Collision {
   /// @brief Basic constructor
   /// @param f Fraction of motion to collision
   /// @param n Normal for collision response
+  public Collision() {
+          this.f = Double.POSITIVE_INFINITY;
+          this.n = null;
+  }
+
   public Collision(double f, Vector n) {
     this.f = f;
     this.n = n;
@@ -15,4 +20,6 @@ public class Collision {
   public double f() {return f;}
   /// @return Normal for collision response
   public Vector n() {return n;}
+
+  public String toString() {return String.valueOf(f) + " " + n.toString();}
 }

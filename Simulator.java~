@@ -158,8 +158,63 @@ public class Simulator {
                         return null;
         }
 
-        private Collision checkIntersection(Vector p, Vector pnew, Obstacle obs) {
+        //Got help from http://stackoverflow.com/questions/563198/how-do-you-
+        //detect-where-two-line-segments-intersect
+        private static Collision checkIntersection(
+                        Vector p, Vector r, Vector q, Vector s) {
+                Collision c  = new Collision(Double.POSITIVE_INFINITY,null);
+                r.subeq(p);
+                s.subeq(q);
+                Vector qMinusP = q.sub(p);
+                double rCrossS = r.cross(s);
+                double t = qMinusP.cross(s)/rCrossS;
+                double u = qMinusP.cross(r)/rCrossS;
+                if(equals(rCrossS, 0)) {
+                        System.out.println("No Collision detected");
+                        return c;
+                }
+                else if(t>=0 && t<=1 && u>=0 && u<=1) {
+                         c = new Collision(t, p.add(r.multiply(t)));
+                         System.out.println("Calculating intersection");
+                         return c;
+                }
+                else {
+                        System.out.println("Error at Intersection check");
+                        return c;
+                }
+        }
 
+        private static Collision checkIntersection(
+                        Vector p, Vector r, Vector[] edge) {
+                Collision c  = new Collision(Double.POSITIVE_INFINITY,null);
+                r.subeq(p);
+                edge[1].subeq(edge[0]);
+                Vector qMinusP = edge[0].sub(p);
+                double rCrossS = r.cross(edge[1]);
+                double t = qMinusP.cross(edge[1])/rCrossS;
+                double u = qMinusP.cross(r)/rCrossS;
+                if(equals(rCrossS, 0)) {
+                        System.out.println("No Collision detected");
+                        return c;
+                }
+                else if(t>=0 && t<=1 && u>=0 && u<=1) {
+                         c = new Collision(t, p.add(r.multiply(t)));
+                         System.out.println("Calculating intersection");
+                         return c;
+                }
+                else {
+                        System.out.println("Error at Intersection check");
+                        return c;
+                }
+        }
+
+
+        public static boolean equals(double a, double b) {
+                double Epsilon = 1e-15;
+                if(Math.abs(a - b) < Epsilon) {
+                        return true;
+                }
+                else { return false; }
         }
 
         private void resolveCollision(Collision c) {
@@ -189,5 +244,36 @@ public class Simulator {
                 GUI.text(-51, 47, String.format("  Draw Time: %5.3f", drawTime));
                 GUI.text(-51, 44, String.format(" Frame Time: %5.3f", frameTime));
                 GUI.text(-51, 41, String.format(" Frame Rate: %5.2f", Math.min(1./frameTime, 1/0.016)));
+        }
+
+        private static String toString(Collision c) {
+                return String.valueOf(c.f()) + " " + c.n().toString();}
+
+
+
+        public static void main(String[] args) {
+                double a1x = Double.parseDouble(args[0]);
+                double a1y = Double.parseDouble(args[1]);
+                double a2x = Double.parseDouble(args[2]);
+                double a2y = Double.parseDouble(args[3]);
+
+                double b1x = Double.parseDouble(args[4]);
+                double b1y = Double.parseDouble(args[5]);
+                double b2x = Double.parseDouble(args[6]);
+                double b2y = Double.parseDouble(args[7]);
+
+                Vector p = new Vector(a1x, a1y);
+                Vector r = new Vector(a2x, a2y);
+                //Vector r = r0.sub(p);
+                Vector q = new Vector(b1x, b1y);
+                Vector s = new Vector(b2x, b2y);
+                //Vector s = s0.sub(q);
+                Collision c = new Collision();
+                c = checkIntersection(p, r, q, s);
+                System.out.println(toString(c));
+
+
+                //Test of intersection detection with Vector[] edge input
+                //TODO
         }
 }

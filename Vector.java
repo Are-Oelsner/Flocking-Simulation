@@ -52,7 +52,7 @@ public class Vector {
                 y = s.nextDouble();
 
                 char p2 = s.findInLine("[)]").charAt(0);
-                if(p2 != ')')
+                if(p2 !=  ')')
                         throw new InputMismatchException("Missing closing parenthesis");
         }
 
@@ -72,6 +72,10 @@ public class Vector {
         /// @return Dot product of this and v
         public double dot(Vector v) {
                 return x*v.x + y*v.y;
+        }
+
+        public double cross(Vector v) {
+                return x * v.y - y * v.x;
         }
 
         /// @brief Vector addition
@@ -137,8 +141,6 @@ public class Vector {
                 n.normeq();
                 return n;
         }
-
-        public Vector get
 
         /// @override
         /// @return String representation of vector

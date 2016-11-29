@@ -99,6 +99,13 @@ public class Obstacle {
         public Vector[] getNormals() {return normals;}
         public Vector[] edges() {return edges;}
 
+        //returns Vector coordinates of an individual edge as a Vector array
+        public Vector[] getEdge(int i) {
+                Vector[] edge = new Vector[2];
+                edge[0] = points[(int)(edges[i].x())];
+                edge[1] = points[(int)(edges[i].y())];
+                return edge;
+        }
         public Vector getPoint(int i) {return points[i];}
 
 }
