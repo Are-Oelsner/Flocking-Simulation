@@ -51,7 +51,6 @@ public class Simulator {
           obstacle = new Obstacle[numObstacle];
           for(int i = 0; i < numObstacle; i++) {
             obstacle[i] = new Obstacle(s);
-            System.out.println(obstacle[i]);
             }
           break;
         default:
@@ -107,7 +106,7 @@ public class Simulator {
         return;
       }
 
-      double tr = timeStep;
+      double tr = timeStep
       while(tr > 0) {
         Ball ballnew = new Ball(ball[i]);
         Vector force = determineForces(ball[i]);

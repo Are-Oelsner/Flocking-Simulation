@@ -106,7 +106,7 @@ public class Simulator {
         return;
       }
 
-      double tr = timeStep
+      double tr = timeStep;
       while(tr > 0) {
         Ball ballnew = new Ball(ball[i]);
         Vector force = determineForces(ball[i]);
