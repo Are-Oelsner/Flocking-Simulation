@@ -15,6 +15,7 @@ public class BallSimulation {
         // Make a simulator on the parameters and simulate
         try {
             Scanner s = new Scanner(new File(args[0]));
+            System.out.println("Test");
             Simulator simulator = new Simulator(s);
             System.out.println("Finished reading data");
             simulator.simulate();
