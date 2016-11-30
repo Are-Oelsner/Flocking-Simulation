@@ -113,12 +113,12 @@ public class Simulator {
         Ball ballnew = new Ball(ball[i]);
         Vector force = determineForces(ball[i]);
         ballnew.applyForce(force, tr);
+        System.out.println("Ball " + i);
         System.out.println(ballnew.pos());
 
         Collision c = checkCollision(ball[i].pos(), ballnew.pos());
         if(c != null) {
           ball[i].applyForce(force, tr*c.f());
-          System.out.println("Ball " + i);
           resolveCollision(c, ball[i]);
           tr -= tr*c.f();
         }
