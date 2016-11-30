@@ -39,8 +39,3 @@ NumPoints 4
   Normals 0 1 -1 0 0 -1 1 0
   Edges 0 1 1 2 2 3 3 0
 ~Obstacle
-
-NumPoints 3
-  Points 20 -52 52 -52 35 0
-  Normals 0.0 -1.0 -0.3526 0.9358 -0.9967 -0.0817
-  Edges 0 1 1 2 2 0

@@ -34,8 +34,3 @@ Work on finding intersection between two lines
         Simulator.java >> update
         Collision.java
 
-NumPoints 4
-  Points -53 -53 53 -53 53 53 -53 53
-  Normals 0 1 -1 0 0 -1 1 0
-  Edges 0 1 1 2 2 3 3 0
-~Obstacle
