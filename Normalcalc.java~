@@ -21,7 +21,7 @@ public class Normalcalc {
         public static Vector getNorm(Vector p0, Vector p1) {
                 Vector p = p1.sub(p0);
                 Vector n = new Vector(p.y(), -p.x());
-                return n.norm();
+                return n.normeq();
         }
 
         public static void main(String[] args) {

@@ -14,6 +14,7 @@ public class Simulator {
         private Vector gravity;  /// Gravity force
         private Vector wind;     /// Wind force
         private Obstacle obstacle;
+        //private Obstacle[] obstacle;
 
         private static final int SAMPLES = 100;
 
@@ -130,9 +131,16 @@ public class Simulator {
         /// @brief Collision check linear motion of ball between two positions
         /// @return First collision
         private Collision checkCollision(Vector p, Vector pnew) {
-                //TODO extend to obstacles and abstract boundary
+                //TODO extend to obstacles and abstract boundaries
+                //
+                //
+                //I'm working on adding in the methods below to check through
+                //all of the obstacles with a for loop
+                //
+                //
                 Collision c = new Collision(Double.POSITIVE_INFINITY, null);
                 double f;
+
                 if(pnew.x() > 50) {
                         f = (50-p.x())/(pnew.x()-p.x());
                         c = new Collision(f, new Vector(-1, 0));
@@ -158,6 +166,21 @@ public class Simulator {
                         return null;
         }
 
+        private static Collision checkCollisionWithObstacle(Obstacle obs, Vector p, Vector r) {
+                int N = obs.getNumPoints();
+                Collision temp;
+                Collision c;
+                double firstCollision = Double.POSITIVE_INFINITY;
+                for(int i = 0; i < N; i++) {
+                        temp = checkIntersection(p, r, obs.getEdge(i));
+                        if(temp.f() < firstCollision) {
+                                firstCollision = temp.f();
+                                c = temp;
+                        }
+                }
+                return c;
+        }
+
         //Got help from http://stackoverflow.com/questions/563198/how-do-you-
         //detect-where-two-line-segments-intersect
         private static Collision checkIntersection(
@@ -165,10 +188,15 @@ public class Simulator {
                 Collision c  = new Collision(Double.POSITIVE_INFINITY,null);
                 r.subeq(p);
                 s.subeq(q);
+
                 Vector qMinusP = q.sub(p);
                 double rCrossS = r.cross(s);
+
                 double t = qMinusP.cross(s)/rCrossS;
+                System.out.println("t = " + t);
                 double u = qMinusP.cross(r)/rCrossS;
+                System.out.println("u = " + u);
+
                 if(equals(rCrossS, 0)) {
                         System.out.println("No Collision detected");
                         return c;
