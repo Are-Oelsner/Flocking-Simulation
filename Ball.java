@@ -19,8 +19,8 @@ public class Ball {
         double x = (Math.random()*10)-5;
         double y = (Math.random()*10)-5;
         //Scales random velocity up
-        double vY = (Math.random()*30)-15;
-        double vX = (Math.random()*30)-15;
+        double vY = (Math.random()*10)-5;
+        double vX = (Math.random()*10)-5;
 
         pos = new Vector(x, y);
         vel = new Vector(x*vX, y*vY);
@@ -141,5 +141,17 @@ public class Ball {
     /// @brief Draw the ball as a circle
     public void draw() {
         GUI.drawCircle(pos.x(), pos.y(), 2);
+    }
+
+    public void print() {
+        System.out.printf("Ball mass %.2f pos %s vel %s\n", mass, pos, vel);
+    }
+
+    public static void main(String[] args) {
+        Ball[] balltest = generateBallArray(10);
+        for(int i = 0; i < 10; i++) {
+            balltest[i] = new Ball();
+            balltest[i].print();
+        }
     }
 }

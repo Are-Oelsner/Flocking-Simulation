@@ -14,9 +14,9 @@ public class Simulator {
     private Ball[] ball;
     private Vector gravity;  /// Gravity force
     private Vector wind;     /// Wind force
-    //private Obstacle obstacle;
+    private Obstacle obstacle;
     private static int numObstacle;
-    private Obstacle[] obstacle;
+    //private Obstacle[] obstacle;
 
     private static final int SAMPLES = 100;
 
@@ -46,13 +46,15 @@ public class Simulator {
                     ball = Ball.generateBallArray(numBall);
                     break;
                 case "Obstacle":
-                    System.out.println("Reading Obstacles");
-                    numObstacle = l.nextInt();
-                    System.out.println("Finished Reading Obstacles");
-                    obstacle = Obstacle.readObstacles(s, numObstacle);
-                    for(int i = 0; i < numObstacle; i++) {
-                        System.out.println(obstacle[i]);
-                    }
+                    System.out.println("Reading Obstacle");
+                    obstacle = new Obstacle(l);
+
+                    /*numObstacle = l.nextInt();
+                      System.out.println("Finished Reading Obstacles");
+                      obstacle = Obstacle.readObstacles(s, numObstacle);
+                      for(int i = 0; i < numObstacle; i++) {
+                      System.out.println(obstacle[i]);
+                      }*/
                     break;
                 default:
                     throw new InputMismatchException("Unknown tag " + tag);
@@ -74,9 +76,7 @@ public class Simulator {
 
             //Update
             long startUpdate = System.nanoTime();
-
             update();
-
             long endUpdate = System.nanoTime();
             updateSum -= updateTimes[i];
             updateTimes[i] = endUpdate - startUpdate;
@@ -86,7 +86,6 @@ public class Simulator {
             long startDraw = System.nanoTime();
 
             GUI.clear();
-
             draw();
             drawFrameRate(updateSum, drawSum);
 
@@ -105,8 +104,10 @@ public class Simulator {
     private void update() {
         for(int i = 0; i < numBall; i++) {
 
-            if(ball[i].rest())
+            if(ball[i].rest()) {
+                System.out.printf("Ball %d at rest", i);
                 return;
+            }
 
             double tr = timeStep;
             while(tr > 0) {
@@ -117,7 +118,8 @@ public class Simulator {
                 Collision c = checkCollision(ball[i].pos(), ballnew.pos());
                 if(c != null) {
                     ball[i].applyForce(force, tr*c.f());
-                    resolveCollision(c, ball[i]);
+                    System.out.println("Ball " + i);
+                    //resolveCollision(c, ball[i]);
                     tr -= tr*c.f();
                 }
                 else {
@@ -131,8 +133,13 @@ public class Simulator {
     /// @brief Determine forces on the ball
     private Vector determineForces(Ball ball) {
         Vector fg = gravity.multiply(ball.mass()); //F_g = m*g where g is acceleration due to gravity
+        System.out.println("fg " + fg);
         Vector fw = wind.multiply(ball.drag());    //F_w = d*w where w is wind vector
+        System.out.println("fw " + fw);
         Vector fa = ball.vel().multiply(-ball.drag()); //F_a = -d*v where v is velocity of ball
+        System.out.println("fa " + fa);
+        System.out.println("velocity " + ball.vel());
+        System.out.println("position " + ball.pos());
 
         //F_tot = F_g + F_w + F_a
         return fg.add(fw.add(fa));
@@ -142,16 +149,36 @@ public class Simulator {
     /// @brief Collision check linear motion of ball between two positions
     /// @return First collision
     private Collision checkCollision(Vector p, Vector pnew) {
+
         Collision c = new Collision(Double.POSITIVE_INFINITY, null);
         double f = Double.POSITIVE_INFINITY;
+        if(pnew.x() > 50) {
+            f = (50-p.x())/(pnew.x()-p.x());
+            c = new Collision(f, new Vector(-1, 0));
+        }
+        else if(pnew.x() < -50) {
+            f = (-50-p.x())/(pnew.x()-p.x());
+            if(f < c.f())
+                c = new Collision(f, new Vector(1, 0));
+        }
+        if(pnew.y() > 50) {
+            f = (50-p.y())/(pnew.y()-p.y());
+            if(f < c.f())
+                c = new Collision(f, new Vector(0, -1));
+        }
+        else if(pnew.y() < -50) {
+            f = (-50-p.y())/(pnew.y()-p.y());
+            if(f < c.f())
+                c = new Collision(f, new Vector(0, 1));
+        }
         Collision temp;
-        for(int i = 0; i < numObstacle; i++) {
-            temp = checkCollisionWithObstacle(obstacle[i], p, pnew);
+        //for(int i = 0; i < numObstacle; i++) {
+            temp = checkCollisionWithObstacle(obstacle/*[i]*/, p, pnew);
             if(temp.f() < f) {
                 c = temp;
                 f = temp.f();
             }
-        }
+       // }
         if(c.f() != Double.POSITIVE_INFINITY)
             return c;
         else
@@ -237,7 +264,8 @@ public class Simulator {
         for(int i = 0; i < numBall; i++) {
             ball[i].draw();
         }
-        drawObstacleArray(obstacle);
+        obstacle.draw();
+        //drawObstacleArray(obstacle);
     }
 
     private void drawObstacleArray(Obstacle[] obs) {

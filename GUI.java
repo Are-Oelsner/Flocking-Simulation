@@ -100,7 +100,7 @@ public class GUI implements KeyListener {
     public static void show() {
         onscreen.drawImage(offscreenImage, 0, 0, null);
         frame.repaint();
-        pause(16);
+        pause(16); //16
     }
 
     public void keyTyped(KeyEvent e) {
