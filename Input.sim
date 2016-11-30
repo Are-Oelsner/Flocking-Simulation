@@ -2,9 +2,14 @@ TimeStep 0.016
 Gravity (0, -9.81)
 Wind (0, 0)
 Ball 30
-Obstacle
- NumPoints 4
+Obstacle 2
+  NumPoints 4
   Points -25 -25 25 -25 25 -35 -25 -35
   Normals 0 1 1 0 0 -1 -1 0
+  Edges 0 1 1 2 2 3 3 0
+~Obstacle
+  NumPoints 4
+  Points -53 -53 53 -53 53 53 -53 53
+  Normals 0 1 -1 0 0 -1 1 0
   Edges 0 1 1 2 2 3 3 0
 ~Obstacle

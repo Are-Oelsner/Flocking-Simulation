@@ -14,9 +14,9 @@ public class Simulator {
   private Ball[] ball;
   private Vector gravity;  /// Gravity force
   private Vector wind;     /// Wind force
-  private Obstacle obstacle;
+  //private Obstacle obstacle;
   private static int numObstacle;
-  //private Obstacle[] obstacle;
+  private Obstacle[] obstacle;
 
   private static final int SAMPLES = 100;
 
@@ -47,13 +47,11 @@ public class Simulator {
           break;
         case "Obstacle":
           System.out.println("Reading Obstacle");
-          obstacle = new Obstacle(s);
-          /*numObstacle = l.nextInt();
-            System.out.println("Finished Reading Obstacles");
-            obstacle = Obstacle.readObstacles(s, numObstacle);
-            for(int i = 0; i < numObstacle; i++) {
-            System.out.println(obstacle[i]);
-            }*/
+          numObstacle = l.nextInt();
+          obstacle = new Obstacle[numObstacle];
+          for(int i = 0; i < numObstacle; i++) {
+            obstacle[i] = new Obstacle(s);
+            }
           break;
         default:
           throw new InputMismatchException("Unknown tag " + tag);
@@ -108,7 +106,7 @@ public class Simulator {
         return;
       }
 
-      double tr = timeStep;
+      double tr = timeStep
       while(tr > 0) {
         Ball ballnew = new Ball(ball[i]);
         Vector force = determineForces(ball[i]);
@@ -169,14 +167,14 @@ public class Simulator {
       if(f < c.f())
         c = new Collision(f, new Vector(0, 1));
     }
-    /* Collision temp;
-       for(int i = 0; i < numObstacle; i++) {
-       temp = checkCollisionWithObstacle(obstacle, p, pnew);
-       if(temp.f() < f) {
-       c = temp;
-       f = temp.f();
-       }
-    // } */
+    Collision temp;
+    for(int i = 0; i < numObstacle; i++) {
+      temp = checkCollisionWithObstacle(obstacle[i], p, pnew);
+      if(temp.f() < f) {
+        c = temp;
+        f = temp.f();
+      }
+    }
     if(c.f() != Double.POSITIVE_INFINITY) {
       return c;
     }
@@ -188,11 +186,9 @@ public class Simulator {
     int N = obs.getNumPoints();
     Collision temp;
     Collision c = new Collision();
-    double firstCollision = Double.POSITIVE_INFINITY;
     for(int i = 0; i < N; i++) {
       temp = checkIntersection(p, r, obs.getEdge(i)[0], obs.getEdge(i)[1]);
-      if(temp.f() < firstCollision) {
-        firstCollision = temp.f();
+      if(temp.f() < c.f()) {
         c = temp;
       }
     }
@@ -201,8 +197,7 @@ public class Simulator {
 
   //Got help from http://stackoverflow.com/questions/563198/how-do-you-
   //detect-where-two-line-segments-intersect
-  private static Collision checkIntersection(
-      Vector p, Vector r, Vector q, Vector s) {
+  private static Collision checkIntersection(Vector p, Vector r, Vector q, Vector s) {
     Collision c  = new Collision(Double.POSITIVE_INFINITY,null);
     r.subeq(p);
     s.subeq(q);
@@ -225,7 +220,7 @@ public class Simulator {
     else {
       return c;
     }
-      }
+  }
 
 
   public static boolean equals(double a, double b) {
@@ -263,7 +258,9 @@ public class Simulator {
     for(int i = 0; i < numBall; i++) {
       ball[i].draw();
     }
-    obstacle.draw();
+    for(int i = 0; i < numObstacle; i++) {
+      obstacle[i].draw();
+    }
     //drawObstacleArray(obstacle);
   }
 

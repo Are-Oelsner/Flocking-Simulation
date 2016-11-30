@@ -20,6 +20,8 @@ public class Collision {
     public double f() {return f;}
     /// @return Normal for collision response
     public Vector n() {return n;}
+    public void f(double f) {this.f = f;}
+    public void n(Vector n) {this.n = n;}
 
     public String toString() {return String.valueOf(f) + " " + n.toString();}
 }

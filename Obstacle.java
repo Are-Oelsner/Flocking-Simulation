@@ -42,6 +42,13 @@ public class Obstacle {
       Scanner l = new Scanner(line);
       String tag = l.next();
       switch(tag) {
+        case "NumPoints":
+          System.out.println("Reading numPoints");
+          numPoints = l.nextInt();
+          points = new Vector[numPoints];
+          normals = new Vector[numPoints];
+          edges = new Vector[numPoints];
+          break;
         case "Points":
           System.out.println("Reading points");
           for(int i = 0; i < numPoints; i++) {
@@ -49,13 +56,6 @@ public class Obstacle {
             double y = l.nextDouble();
             points[i] = new Vector(x, y);
           }
-          break;
-        case "NumPoints":
-          System.out.println("Reading numPoints");
-          numPoints = l.nextInt();
-          points = new Vector[numPoints];
-          normals = new Vector[numPoints];
-          edges = new Vector[numPoints];
           break;
         case "Normals":
           System.out.println("Reading normals");
