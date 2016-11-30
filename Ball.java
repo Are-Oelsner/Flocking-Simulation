@@ -1,5 +1,6 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.awt.Color;
 
 /// @brief A class encapsulating a state for our simulation
 ///
@@ -13,14 +14,16 @@ public class Ball {
     private double elasticity; ///< Elasticity constant
     private double friction;   ///< Friction constant
     private boolean rest;      ///< Simulate agent (true)
+    private double radius;
 
     public Ball() {
         //Randomizes position and velocity
         double x = (Math.random()*10)-5;
         double y = (Math.random()*10)-5;
         //Scales random velocity up
-        double vY = (Math.random()*10)-5;
-        double vX = (Math.random()*10)-5;
+        double vY = (Math.random()*50)-25;
+        double vX = (Math.random()*50)-25;
+
 
         pos = new Vector(x, y);
         vel = new Vector(x*vX, y*vY);
@@ -28,6 +31,7 @@ public class Ball {
         drag = .1;
         elasticity = 0.9;
         friction = 0.1;
+        radius = (Math.random()*3)+1;
     }
 
     /// @brief Copy constructor
@@ -40,6 +44,7 @@ public class Ball {
         elasticity = a.elasticity;
         friction = a.friction;
         rest = a.rest;
+        radius = a.radius;
     }
     /// @brief Constructor from Scanner
     /// @param s Scanner
@@ -74,6 +79,10 @@ public class Ball {
                 case "Velocity":
                     System.out.println("Reading velocity");
                     vel = new Vector(l);
+                    break;
+                case "Radius":
+                    System.out.println("Reading radius");
+                    radius = l.nextDouble();
                     break;
                 case "~Ball":
                     System.out.println("Reading ~Ball");
@@ -118,6 +127,7 @@ public class Ball {
     public Vector pos() {return pos;}
     /// @return Velocity of the ball
     public Vector vel() {return vel;}
+    public double getRadius() {return radius;}
     /// @brief Set position of the ball
     /// @param p Position
     public void pos(Vector p) {pos = new Vector(p);}
@@ -140,7 +150,7 @@ public class Ball {
 
     /// @brief Draw the ball as a circle
     public void draw() {
-        GUI.drawCircle(pos.x(), pos.y(), 2);
+        GUI.drawCircle(pos.x(), pos.y(), radius);
     }
 
     public void print() {

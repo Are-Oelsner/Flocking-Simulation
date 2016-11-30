@@ -113,12 +113,13 @@ public class Simulator {
         Ball ballnew = new Ball(ball[i]);
         Vector force = determineForces(ball[i]);
         ballnew.applyForce(force, tr);
+        System.out.println(ballnew.pos());
 
         Collision c = checkCollision(ball[i].pos(), ballnew.pos());
         if(c != null) {
           ball[i].applyForce(force, tr*c.f());
           System.out.println("Ball " + i);
-          //resolveCollision(c, ball[i]);
+          resolveCollision(c, ball[i]);
           tr -= tr*c.f();
         }
         else {
@@ -132,9 +133,7 @@ public class Simulator {
   /// @brief Determine forces on the ball
   private Vector determineForces(Ball ball) {
     Vector fg = gravity.multiply(ball.mass()); //F_g = m*g where g is acceleration due to gravity
-    System.out.println("fg " + fg);
     Vector fw = wind.multiply(ball.drag());    //F_w = d*w where w is wind vector
-    System.out.println("fw " + fw);
     Vector fa = ball.vel().multiply(-ball.drag()); //F_a = -d*v where v is velocity of ball
     System.out.println("fa " + fa);
     System.out.println("velocity " + ball.vel());

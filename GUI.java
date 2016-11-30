@@ -128,6 +128,15 @@ public class GUI implements KeyListener {
     public static void drawCircle(double x, double y, double r) {
         double rx = factorX(2*r);
         double ry = factorY(2*r);
+        double N = Math.random()*6;
+        Color color;
+        if(N <= 1) {color = Color.BLUE;}
+        else if(N > 1 && N <= 2) {color = Color.RED;}
+        else if(N > 2 && N <= 3) {color = Color.YELLOW;}
+        else if(N > 3 && N <= 4) {color = Color.GREEN;}
+        else if(N > 4 && N <= 5) {color = Color.CYAN;}
+        else {color = Color.PINK;}
+        offscreen.setColor(color);
         offscreen.fill(new Ellipse2D.Double(
                     scaleX(x) - rx/2, scaleY(y) - ry/2, rx, ry));
     }
@@ -152,7 +161,7 @@ public class GUI implements KeyListener {
     public static void text(double x, double y, String text) {
         if (text == null)
             throw new NullPointerException();
-
+        offscreen.setColor(Color.WHITE);
         offscreen.setFont(DEFAULT_FONT);
         FontMetrics metrics = offscreen.getFontMetrics();
         double xs = scaleX(x);

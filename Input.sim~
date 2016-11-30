@@ -1,7 +1,7 @@
 TimeStep 0.016
 Gravity (0, -9.81)
 Wind (0, 0)
-Ball 5
+Ball 10
 Obstacle
   NumPoints 3
   Points 20 -52 52 -52 35 0
