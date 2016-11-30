@@ -84,6 +84,14 @@ public class Obstacle {
                 }
         }
 
+        public static Obstacle[] readObstacles(Scanner s, int N) throws FileNotFoundException {
+                Obstacle[] Obstacle = new Obstacle[N];
+                for(int i = 0; i < N; i++) {
+                        Obstacle[i] = new Obstacle(s);
+                }
+                return Obstacle;
+        }
+
         public void draw() {
                 double[] xPoints = new double[numPoints];
                 double[] yPoints = new double[numPoints];
@@ -94,12 +102,13 @@ public class Obstacle {
                 GUI.drawPolygon(xPoints, yPoints, numPoints);
         }
 
+
         public int getNumPoints() {return numPoints;}
         public Vector[] getPoints() {return points;}
         public Vector[] getNormals() {return normals;}
         public Vector[] edges() {return edges;}
 
-
+        //returns Vector coordinates of an individual edge as a Vector array
         public Vector[] getEdge(int i) {
                 Vector[] edge = new Vector[2];
                 edge[0] = points[(int)(edges[i].x())];

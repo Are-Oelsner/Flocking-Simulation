@@ -139,7 +139,7 @@ public class GUI implements KeyListener {
                         _x[i] = (int)scaleX(x[i]);
                         _y[i] = (int)scaleY(y[i]);
                 }
-                offscreen.fillPolygon(_x, _y, numPoints);
+                offscreen.drawPolygon(_x, _y, numPoints);
                 //drawPolygon(x, y, numPoints);
         }
 

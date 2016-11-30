@@ -10,11 +10,12 @@ public class Simulator {
 
         private double timeStep; /// Timestep - time passed in virtual world per frame
         private Ball ball;       /// Ball to simulate
-  //      private Ball[] Ball;
+        private Ball[] Ball;
         private Vector gravity;  /// Gravity force
         private Vector wind;     /// Wind force
-        private Obstacle obstacle;
-        //private Obstacle[] obstacle;
+        //private Obstacle obstacle;
+        private static int numObstacle = 0;
+        private Obstacle[] obstacle;
 
         private static final int SAMPLES = 100;
 
@@ -44,8 +45,13 @@ public class Simulator {
                                         ball = new Ball(s);
                                         break;
                                 case "Obstacle":
-                                        System.out.println("Reading Obstacle");
-                                        obstacle = new Obstacle(s);
+                                        System.out.println("Reading Obstacles");
+                                        numObstacle = l.nextInt();
+                                        System.out.println("Finished Reading Obstacles");
+                                        obstacle = Obstacle.readObstacles(s, numObstacle);
+                                        for(int i = 0; i < numObstacle; i++) {
+                                                System.out.println(obstacle[i]);
+                                        }
                                         break;
                                 default:
                                         throw new InputMismatchException("Unknown tag " + tag);
@@ -128,37 +134,19 @@ public class Simulator {
                 return fg.add(fw.add(fa));
         }
 
+
         /// @brief Collision check linear motion of ball between two positions
         /// @return First collision
         private Collision checkCollision(Vector p, Vector pnew) {
-                //TODO extend to obstacles and abstract boundaries
-                //
-                //
-                //I'm working on adding in the methods below to check through
-                //all of the obstacles with a for loop
-                //
-                //
                 Collision c = new Collision(Double.POSITIVE_INFINITY, null);
-                double f;
-
-                if(pnew.x() > 50) {
-                        f = (50-p.x())/(pnew.x()-p.x());
-                        c = new Collision(f, new Vector(-1, 0));
-                }
-                else if(pnew.x() < -50) {
-                        f = (-50-p.x())/(pnew.x()-p.x());
-                        if(f < c.f())
-                                c = new Collision(f, new Vector(1, 0));
-                }
-                if(pnew.y() > 50) {
-                        f = (50-p.y())/(pnew.y()-p.y());
-                        if(f < c.f())
-                                c = new Collision(f, new Vector(0, -1));
-                }
-                else if(pnew.y() < -50) {
-                        f = (-50-p.y())/(pnew.y()-p.y());
-                        if(f < c.f())
-                                c = new Collision(f, new Vector(0, 1));
+                double f = Double.POSITIVE_INFINITY;
+                Collision temp;
+                for(int i = 0; i < numObstacle; i++) {
+                        temp = checkCollisionWithObstacle(obstacle[i], p, pnew);
+                        if(temp.f() < f) {
+                                c = temp;
+                                f = temp.f();
+                        }
                 }
                 if(c.f() != Double.POSITIVE_INFINITY)
                         return c;
@@ -172,7 +160,7 @@ public class Simulator {
                 Collision c = new Collision();
                 double firstCollision = Double.POSITIVE_INFINITY;
                 for(int i = 0; i < N; i++) {
-                        temp = checkIntersection(p, r, obs.getEdge(i));
+                        temp = checkIntersection(p, r, obs.getEdge(i)[0], obs.getEdge(i)[1]);
                         if(temp.f() < firstCollision) {
                                 firstCollision = temp.f();
                                 c = temp;
@@ -193,9 +181,7 @@ public class Simulator {
                 double rCrossS = r.cross(s);
 
                 double t = qMinusP.cross(s)/rCrossS;
-                System.out.println("t = " + t);
                 double u = qMinusP.cross(r)/rCrossS;
-                System.out.println("u = " + u);
 
                 if(equals(rCrossS, 0)) {
                         System.out.println("No Collision detected");
@@ -207,7 +193,6 @@ public class Simulator {
                          return c;
                 }
                 else {
-                        System.out.println("Error at Intersection check");
                         return c;
                 }
         }
@@ -259,7 +244,13 @@ public class Simulator {
 
         private void draw() {
                 ball.draw();
-                obstacle.draw();
+                drawObstacleArray(obstacle);
+        }
+
+        private void drawObstacleArray(Obstacle[] obs) {
+                for(int i = 0; i < numObstacle; i++) {
+                        obs[i].draw();
+                }
         }
 
         private void drawFrameRate(long updateSum, long drawSum) {
@@ -272,12 +263,13 @@ public class Simulator {
                 GUI.text(-51, 47, String.format("  Draw Time: %5.3f", drawTime));
                 GUI.text(-51, 44, String.format(" Frame Time: %5.3f", frameTime));
                 GUI.text(-51, 41, String.format(" Frame Rate: %5.2f", Math.min(1./frameTime, 1/0.016)));
+                GUI.text(-51, 38, String.format(" Position:(%.2f, %.2f", ball.pos().x(), ball.pos().y()));
         }
 
         private static String toString(Collision c) {
                 return String.valueOf(c.f()) + " " + c.n().toString();}
 
-
+        public static int getNumObstacles() {return numObstacle;}
 
         public static void main(String[] args) {
                 double a1x = Double.parseDouble(args[0]);
