@@ -10,6 +10,7 @@ public class Simulator {
 
         private double timeStep; /// Timestep - time passed in virtual world per frame
         private Ball ball;       /// Ball to simulate
+  //      private Ball[] Ball;
         private Vector gravity;  /// Gravity force
         private Vector wind;     /// Wind force
         private Obstacles obstacle;
@@ -38,6 +39,7 @@ public class Simulator {
                                         break;
                                 case "Ball":
                                         System.out.println("Reading agent");
+                                       // readAgents();
                                         ball = new Ball(s);
                                         break;
                                 case "Obstacle":
