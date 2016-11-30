@@ -14,6 +14,22 @@ public class Ball {
     private double friction;   ///< Friction constant
     private boolean rest;      ///< Simulate agent (true)
 
+    public Ball() {
+        //Randomizes position and velocity
+        double x = (Math.random()*10)-5;
+        double y = (Math.random()*10)-5;
+        //Scales random velocity up
+        double vY = (Math.random()*30)-15;
+        double vX = (Math.random()*30)-15;
+
+        pos = new Vector(x, y);
+        vel = new Vector(x*vX, y*vY);
+        mass = 1;
+        drag = .1;
+        elasticity = 0.9;
+        friction = 0.1;
+    }
+
     /// @brief Copy constructor
     /// @param a Ball
     public Ball(Ball a) {
@@ -68,6 +84,14 @@ public class Ball {
             }
             l.close();
         }
+    }
+
+    public static Ball[] generateBallArray(int i) {
+        Ball[] ball = new Ball[i];
+        for(int j = 0; j < i; j++) {
+            ball[j] = new Ball();
+        }
+        return ball;
     }
 
     /*
