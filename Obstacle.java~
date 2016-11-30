@@ -117,6 +117,8 @@ public class Obstacle {
         }
         public Vector getPoint(int i) {return points[i];}
 
+        public String toString() {return String.valueOf(numPoints);}
+
 }
 
 

@@ -52,7 +52,7 @@ public class Ball {
           friction = l.nextDouble();
           break;
         case "Position":
-          Systm.out.println("Reading position");
+          System.out.println("Reading position");
           pos = new Vector(l);
           break;
         case "Velocity":

@@ -7,8 +7,8 @@ public class Collision {
   /// @param f Fraction of motion to collision
   /// @param n Normal for collision response
   public Collision() {
-          this.f = Double.POSITIVE_INFINITY;
-          this.n = null;
+    this.f = Double.POSITIVE_INFINITY;
+    this.n = null;
   }
 
   public Collision(double f, Vector n) {
