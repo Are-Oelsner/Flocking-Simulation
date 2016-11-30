@@ -1,14 +1,7 @@
 TimeStep 0.016
 Gravity (0, -9.81)
 Wind (0, 0)
-Ball
-  Mass 1
-  Drag 0.1
-  Elasticity 0.9
-  Friction 0.1
-  Position (0, 0)
-  Velocity (1, -1)
-~Ball
+Ball 2
 Obstacle 2
   NumPoints 4
   Points -53 -53 53 -53 53 53 -53 53

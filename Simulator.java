@@ -9,12 +9,13 @@ import java.io.FileNotFoundException;
 public class Simulator {
 
     private double timeStep; /// Timestep - time passed in virtual world per frame
-    private Ball ball;       /// Ball to simulate
-    private Ball[] Ball;
+    //private Ball ball;       /// Ball to simulate
+    private static int numBall;
+    private Ball[] ball;
     private Vector gravity;  /// Gravity force
     private Vector wind;     /// Wind force
     //private Obstacle obstacle;
-    private static int numObstacle = 0;
+    private static int numObstacle;
     private Obstacle[] obstacle;
 
     private static final int SAMPLES = 100;
@@ -41,8 +42,8 @@ public class Simulator {
                     break;
                 case "Ball":
                     System.out.println("Reading agent");
-                    // readAgents();
-                    ball = new Ball(s);
+                    numBall = l.nextInt();
+                    ball = Ball.generateBallArray(numBall);
                     break;
                 case "Obstacle":
                     System.out.println("Reading Obstacles");
@@ -102,30 +103,33 @@ public class Simulator {
 
     /// @brief Update the position of the ball
     private void update() {
-        if(ball.rest())
-            return;
+        for(int i = 0; i < numBall; i++) {
 
-        double tr = timeStep;
-        while(tr > 0) {
-            Ball ballnew = new Ball(ball);
-            Vector force = determineForces();
-            ballnew.applyForce(force, tr);
+            if(ball[i].rest())
+                return;
 
-            Collision c = checkCollision(ball.pos(), ballnew.pos());
-            if(c != null) {
-                ball.applyForce(force, tr*c.f());
-                resolveCollision(c);
-                tr -= tr*c.f();
-            }
-            else {
-                ball = ballnew;
-                tr = 0;
+            double tr = timeStep;
+            while(tr > 0) {
+                Ball ballnew = new Ball(ball[i]);
+                Vector force = determineForces(ball[i]);
+                ballnew.applyForce(force, tr);
+
+                Collision c = checkCollision(ball[i].pos(), ballnew.pos());
+                if(c != null) {
+                    ball[i].applyForce(force, tr*c.f());
+                    resolveCollision(c, ball[i]);
+                    tr -= tr*c.f();
+                }
+                else {
+                    ball[i] = ballnew;
+                    tr = 0;
+                }
             }
         }
     }
 
     /// @brief Determine forces on the ball
-    private Vector determineForces() {
+    private Vector determineForces(Ball ball) {
         Vector fg = gravity.multiply(ball.mass()); //F_g = m*g where g is acceleration due to gravity
         Vector fw = wind.multiply(ball.drag());    //F_w = d*w where w is wind vector
         Vector fa = ball.vel().multiply(-ball.drag()); //F_a = -d*v where v is velocity of ball
@@ -206,7 +210,7 @@ public class Simulator {
         else { return false; }
     }
 
-    private void resolveCollision(Collision c) {
+    private void resolveCollision(Collision c, Ball ball) {
         Vector vn = c.n().multiply(c.n().dot(ball.vel()));
         Vector vt = ball.vel().sub(vn);
         vn.multiplyeq(-ball.elasticity());
@@ -230,7 +234,9 @@ public class Simulator {
        } */
 
     private void draw() {
-        ball.draw();
+        for(int i = 0; i < numBall; i++) {
+            ball[i].draw();
+        }
         drawObstacleArray(obstacle);
     }
 
@@ -250,7 +256,6 @@ public class Simulator {
         GUI.text(-51, 47, String.format("  Draw Time: %5.3f", drawTime));
         GUI.text(-51, 44, String.format(" Frame Time: %5.3f", frameTime));
         GUI.text(-51, 41, String.format(" Frame Rate: %5.2f", Math.min(1./frameTime, 1/0.016)));
-        GUI.text(-51, 38, String.format(" Position:(%.2f, %.2f", ball.pos().x(), ball.pos().y()));
     }
 
     private static String toString(Collision c) {

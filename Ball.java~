@@ -86,6 +86,14 @@ public class Ball {
         }
     }
 
+    public static Ball[] generateBallArray(int i) {
+        Ball[] ball = new Ball[i];
+        for(int j = 0; j < i; j++) {
+            ball[j] = new Ball();
+        }
+        return ball;
+    }
+
     /*
        public void readAgents(Scanner s) throws FileNotFoundException {
        int N = s.nextInt();
