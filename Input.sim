@@ -7,9 +7,14 @@ Ball
   Elasticity 0.9
   Friction 0.1
   Position (0, 0)
-  Velocity (100, 70)
+  Velocity (1, -1)
 ~Ball
-Obstacle
+Obstacle 2
+  NumPoints 4
+  Points -53 -53 53 -53 53 53 -53 53
+  Normals 0 1 -1 0 0 -1 1 0
+  Edges 0 1 1 2 2 3 3 0
+~Obstacle
   NumPoints 3
   Points 20 -52 52 -52 35 0
   Normals 0.0 -1.0 -0.3526 0.9358 -0.9967 -0.0817
